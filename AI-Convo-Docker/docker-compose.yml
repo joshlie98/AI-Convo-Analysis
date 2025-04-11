@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: database
+    ports:
+      - "5431:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-phi
+    restart: unless-stopped
+    ports:
+      - "11000:11434"
+    volumes:
+      - ollama_data1:/root/.ollama
+    command: [ "serve" ]
+    environment:
+      - OLLAMA_MODELS=phi-2  # Lädt Phi beim Start
+      - OLLAMA_MAX_RAM=10GB
+volumes:
+  postgres_data:
+    driver: local
+  ollama_data1:
+    driver: local
