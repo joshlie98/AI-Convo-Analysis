@@ -1,24 +1,24 @@
 import psycopg2
 import pandas as pd
 import nltk
-from nltk.sentiment import SentimentIntensityAnalyzer # Nicht intelligent genug
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 
 #nltk.download('vader_lexicon')
 
-filename = "test"
+
 # Connect to PostgreSQL database and fetch data
 def read_data_from_postgres():
     conn = psycopg2.connect(
-        dbname="database",
+        dbname="postgres",
         user="postgres",
         password="admin",
         host="localhost",
         port="5431"
     )
     cur = conn.cursor()
-    insert_query = "SELECT * FROM rawdata_texts WHERE id = %s;"
-    cur.execute(insert_query, (filename,))
+    insert_query = "SELECT * FROM data;"
+    cur.execute(insert_query)
 
     # Fetch data
     data = cur.fetchall()
@@ -33,14 +33,6 @@ def read_data_from_postgres():
     return df
 
 
-# Word count function
-def count_words(df):
-    word_count = {}
-    for comment in df['text']:
-        for word in comment.split():  #Tokenize
-            word_count[word] = word_count.get(word, 0) + 1
-    return pd.DataFrame(list(word_count.items()), columns=['word', 'count']).sort_values(by='count', ascending=False)
-
 
 # Sentiment analysis function
 def get_vader_sentiment(text, sia):
@@ -54,9 +46,16 @@ def interpret_sentiment(compound_score):
     else:
         return 'Negative'
 
-def send_back_to_postgres(df):
+def get_convo_sentiment_summary(df):
+    # Group by conversation ID and calculate the average compound score
+    convo_scores = df.groupby('id_convo')['sentiment_score'].mean()
+
+    # Convert to dict {id_convo: sentiment_scores}
+    return convo_scores.to_dict()
+
+def send_sentiment_back_to_postgres(df):
     conn = psycopg2.connect(
-        dbname="database",
+        dbname="postgres",
         user="postgres",
         password="admin",
         host="localhost",
@@ -66,19 +65,37 @@ def send_back_to_postgres(df):
     try:
         for index, row in df.iterrows():
             cur.execute("""
-                INSERT INTO sentiment_data (id, text, filetype, sentiment_score, sentiment_category)
+                INSERT INTO sentiment_data (id_line, id_convo, convo_iteration, text, sentiment_score, sentiment_category)
                 VALUES (%s, %s, %s, %s, %s)
                 ON CONFLICT (text) DO UPDATE SET
                     text = EXCLUDED.text,
-                    filetype = EXCLUDED.filetype,
+                    id_line = EXCLUDED.id_line,
+                    id_convo = EXCLUDED.id_convo,
+                    convo_iteration = EXCLUDED.convo_iteration,
                     sentiment_score = EXCLUDED.sentiment_score,
                     sentiment_category = EXCLUDED.sentiment_category
             """, (
-                row['id'],
+                row['id_line'],
+                row['id_convo'],
+                row['convo_iteration'],
                 row['text'],
-                row['filetype'],
                 row['sentiment_score'],
                 row['sentiment_category']
+            ))
+        # Insert conversation sentiment summary
+
+        convo_sentiment_df = df[['id_convo', 'convo_sentiment_score', 'convo_sentiment_category']].drop_duplicates()
+        for index, row in convo_sentiment_df.iterrows():
+            cur.execute("""
+                     INSERT INTO sentiment_convo (id_convo, convo_sentiment_score, convo_sentiment_category)
+                     VALUES (%s, %s, %s)
+                     ON CONFLICT (id_convo) DO UPDATE SET
+                         convo_sentiment_score = EXCLUDED.convo_sentiment_score,
+                         convo_sentiment_category = EXCLUDED.convo_sentiment_category
+                 """, (
+                row['id_convo'],
+                row['convo_sentiment_score'],
+                row['convo_sentiment_category']
             ))
         conn.commit()  # Commit the transaction
     except Exception as e:
@@ -96,6 +113,15 @@ data = read_data_from_postgres()
 # Apply sentiment analysis to each line
 data['sentiment_score'] = data['text'].apply(lambda comment: get_vader_sentiment(comment, sia))
 data['sentiment_category'] = data['sentiment_score'].apply(interpret_sentiment)
-send_back_to_postgres(data) #send back to postgres
 
+# Get the summary as a dictionary
+convo_scores = get_convo_sentiment_summary(data)
+
+# Map scores back to each row based on id_convo
+data['convo_sentiment_score'] = data['id_convo'].map(convo_scores)
+data['convo_sentiment_category'] = data['convo_sentiment_score'].apply(interpret_sentiment)
 print(data)
+send_sentiment_back_to_postgres(data) #send back to postgres
+
+
+#print(data)
