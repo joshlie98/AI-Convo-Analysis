@@ -66,8 +66,8 @@ def send_sentiment_back_to_postgres(df):
         for index, row in df.iterrows():
             cur.execute("""
                 INSERT INTO sentiment_data (id_line, id_convo, convo_iteration, text, sentiment_score, sentiment_category)
-                VALUES (%s, %s, %s, %s, %s)
-                ON CONFLICT (text) DO UPDATE SET
+                VALUES (%s, %s, %s, %s, %s, %s)
+                ON CONFLICT (id_line) DO UPDATE SET
                     text = EXCLUDED.text,
                     id_line = EXCLUDED.id_line,
                     id_convo = EXCLUDED.id_convo,
