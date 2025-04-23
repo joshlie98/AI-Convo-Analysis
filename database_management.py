@@ -21,10 +21,13 @@ query1 = """
     );
     """
 query2 = 'drop table conversations;'
-query3= """ 
-drop table sentiment_data
-
-"""
+query3 = """
+  CREATE TABLE sentiment_convo (
+    id_convo TEXT NOT NULL Primary Key,
+    convo_sentiment_score FLOAT NOT NULL, 
+    convo_sentiment_category TEXT NOT NULL
+    );
+    """
 query4 = """
     CREATE TABLE sentiment_data (
     id_line TEXT NOT NULL,
