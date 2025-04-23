@@ -10,7 +10,7 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 # Connect to PostgreSQL database and fetch data
 def read_data_from_postgres():
     conn = psycopg2.connect(
-        dbname="postgres",
+        dbname="database",
         user="postgres",
         password="admin",
         host="localhost",
@@ -55,7 +55,7 @@ def get_convo_sentiment_summary(df):
 
 def send_sentiment_back_to_postgres(df):
     conn = psycopg2.connect(
-        dbname="postgres",
+        dbname="database",
         user="postgres",
         password="admin",
         host="localhost",
@@ -65,20 +65,14 @@ def send_sentiment_back_to_postgres(df):
     try:
         for index, row in df.iterrows():
             cur.execute("""
-                INSERT INTO sentiment_data (id_line, id_convo, convo_iteration, text, sentiment_score, sentiment_category)
-                VALUES (%s, %s, %s, %s, %s, %s)
+                INSERT INTO sentiment_data (id_line, sentiment_score, sentiment_category)
+                VALUES (%s, %s, %s)
                 ON CONFLICT (id_line) DO UPDATE SET
-                    text = EXCLUDED.text,
                     id_line = EXCLUDED.id_line,
-                    id_convo = EXCLUDED.id_convo,
-                    convo_iteration = EXCLUDED.convo_iteration,
                     sentiment_score = EXCLUDED.sentiment_score,
                     sentiment_category = EXCLUDED.sentiment_category
             """, (
                 row['id_line'],
-                row['id_convo'],
-                row['convo_iteration'],
-                row['text'],
                 row['sentiment_score'],
                 row['sentiment_category']
             ))
