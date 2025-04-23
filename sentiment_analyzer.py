@@ -17,7 +17,7 @@ def read_data_from_postgres():
         port="5431"
     )
     cur = conn.cursor()
-    insert_query = "SELECT * FROM data;"
+    insert_query = "SELECT * FROM conversation;"
     cur.execute(insert_query)
 
     # Fetch data
