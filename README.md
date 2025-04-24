@@ -74,6 +74,15 @@ Architektur:
 
 ---
 
+## Status
+
+Die Konversationsgenerierung und Sentimentanalyse sind implementiert.  
+Die explorative Datenanalyse und Visualisierung befinden sich in Arbeit.
+
+
+---
+
+
 
 ReadMe - English:
 
@@ -157,7 +166,3 @@ Conversation generation and sentiment analysis are fully implemented.
 Exploratory data analysis and visualization are currently in progress.
 
 
-## Status
-
-Die Konversationsgenerierung und Sentimentanalyse sind implementiert.  
-Die explorative Datenanalyse und Visualisierung befinden sich in Arbeit.
