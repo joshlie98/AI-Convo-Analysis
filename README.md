@@ -30,8 +30,8 @@ Ablauf:
 
 Die resultierende Unterhaltung wird in der PostgreSQL-Tabelle `conversations` gespeichert. Erfasst werden u. a.:
 
-- `id_convo` - generiert aus 
-- `id_line`
+- `id_convo` - generiert mit UUID
+- `id_line`- generiert mit UUID + Iterationsidentifikation
 - `speaker` - die Output KI-Instanz
 - `text` - Output der KI
 - `convo_iteration` - Iteration der Unterhaltung, Konversationsstarter haben die Iteration -1
