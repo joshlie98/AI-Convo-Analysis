@@ -9,7 +9,7 @@ Die Tabellen sind miteinander über Primär- und Fremdschlüsselbeziehungen verb
 
 ## Tabellenübersicht
 
-### 🗂 conversation
+### conversation
 
 | Spalte           | Typ      | Beschreibung |
 |:-----------------|:---------|:-------------|
@@ -21,7 +21,7 @@ Die Tabellen sind miteinander über Primär- und Fremdschlüsselbeziehungen verb
 
 ---
 
-### 🗂 sentiment_convo
+### sentiment_convo
 
 | Spalte                  | Typ                | Beschreibung |
 |:-------------------------|:-------------------|:-------------|
@@ -31,7 +31,7 @@ Die Tabellen sind miteinander über Primär- und Fremdschlüsselbeziehungen verb
 
 ---
 
-### 🗂 sentiment_data
+### sentiment_data
 
 | Spalte            | Typ                | Beschreibung |
 |:------------------|:-------------------|:-------------|
@@ -86,7 +86,7 @@ The tables are connected via primary and foreign key relationships.
 
 ## Table Overview
 
-### 🗂 conversation
+###  conversation
 
 | Column            | Type      | Description |
 |:------------------|:----------|:------------|
@@ -98,7 +98,7 @@ The tables are connected via primary and foreign key relationships.
 
 ---
 
-### 🗂 sentiment_convo
+###  sentiment_convo
 
 | Column                   | Type               | Description |
 |:--------------------------|:-------------------|:------------|
@@ -108,7 +108,7 @@ The tables are connected via primary and foreign key relationships.
 
 ---
 
-### 🗂 sentiment_data
+###  sentiment_data
 
 | Column            | Type                | Description |
 |:------------------|:--------------------|:------------|
