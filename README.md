@@ -6,7 +6,7 @@ ReadMe - Deutsch:
 
 Dieses Projekt kombiniert:
 
-- Phi2, ein leichtgewichtiges KI-Sprachmodell
+- Phi2, ein leichtgewichtiges KI-Sprachmodell -> bereitgestellt über Ollama
 - PostgreSQL zur strukturierten Speicherung von Konversationsdaten
 - NLTK zur Sentiment-Analyse
 - Docker für eine reproduzierbare Umgebung
@@ -92,7 +92,7 @@ ReadMe - English:
 
 This project combines:
 
-- **Phi2**, a lightweight language model
+- **Phi2**, a lightweight language model -> deployed via Ollama
 - **PostgreSQL** for structured storage of conversation data
 - **NLTK** for sentiment analysis
 - **Docker** for a fully reproducible environment
