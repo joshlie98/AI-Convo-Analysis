@@ -1,7 +1,0 @@
-1. Dockerfile
-2. Build and start docker: docker compose up -d in AI-Convo-Docker
-3. run: 
-	docker exec -it ollama-phi_1 ollama pull phi
-	docker exec -it ollama-phi_2 ollama pull phi
-
-4. ollama run phi
