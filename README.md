@@ -77,7 +77,7 @@ Architektur:
 ## Status
 
 Die Konversationsgenerierung und Sentimentanalyse sind implementiert.  
-Die explorative Datenanalyse und Visualisierung befinden sich in Arbeit.
+Die explorative Datenanalyse und Visualisierung sind abgeschlossen - Übersetzung auf Englisch erfolgt noch
 
 
 ---
@@ -163,6 +163,6 @@ Architecture:
 ## Status
 
 Conversation generation and sentiment analysis are fully implemented.  
-Exploratory data analysis and visualization are currently in progress.
+Exploratory data analysis and visualization are finished - translation to english is in progress
 
 
