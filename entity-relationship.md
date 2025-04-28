@@ -73,10 +73,7 @@ Die Tabellen sind miteinander über Primär- und Fremdschlüsselbeziehungen verb
 +-----------------+
 
 
-
-
-
-
+```
 # The Database Structure
 
 This project uses a PostgreSQL database with three main tables: `conversation`, `sentiment_data`, and `sentiment_convo`.  
@@ -148,7 +145,6 @@ The tables are connected via primary and foreign key relationships.
 | sentiment_score |
 | sentiment_category |
 +-----------------+
-
 
 
 
